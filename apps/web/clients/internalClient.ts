@@ -4,14 +4,19 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 const registerUser = async (input: PlatformUserCreateInput): Promise<Pick<PlatformUser, "id"> | undefined | null> => {
-  // ToDo: Implement the registerUser function
-  return null
+  try {
+    // Send a POST request to the custom backend API
+    const { data } = await axios.post('http://localhost:3001/register', input);
+    return data.user;
+  } catch (error) {
+    console.error("Registration failed:", error);
+    return null;
+  }
 };
 
 const loginUser = async (input: PlatformUserCreateInput) => {
   // ToDo: Implement the loginUser function (someone else is working on it)
   const user = {id: null} // replace this line
-
 
   // The following lines can be left unchanged because the output is expected to be a JWT token and an expiresAt value
   const accessToken = jwt.sign({ id: user?.id }, process.env.JWT_SECRET || "no_key_set" as string, { expiresIn: '1h' });
